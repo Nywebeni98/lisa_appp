@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indwangu Wear - Premium South African Clothing</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<!-- Yoco SDK -->
+<script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #6b7280;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* Header */
+    .header {
+        background: white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .header .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 20px;
+    }
+
+    .nav-brand {
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #2563eb;
+        cursor: pointer;
+    }
+
+    .nav-brand img {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        margin-right: 0.5rem;
+        border-radius: 8px;
+    }
+
+    .nav-menu {
+        display: flex;
+        gap: 2rem;
+    }
+
+    .nav-link {
+        text-decoration: none;
+        color: #666;
+        font-weight: 500;
+        transition: color 0.3s;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+        color: #2563eb;
+    }
+
+    .nav-icons {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 1.2rem;
+        color: #666;
+    }
+
+    .cart-icon {
+        position: relative;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+
+    .cart-icon:hover {
+        color: #2563eb;
+    }
+
+    .cart-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: #2563eb;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+
+    /* Hero Section - Updated with Logo */
+    .hero {
+        background: linear-gradient(135deg, #2563eb, #7c3aed);
+        color: white;
+        text-align: center;
+        padding: 6rem 2rem 4rem;
+        margin-top: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 400px;
+    }
+
+    .hero-content {
+        width: 100%;
+        max-width: 800px;
+    }
+
+    .hero-logo {
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+        object-fit: contain;
+        margin-bottom: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        transition: transform 0.3s ease;
+    }
+
+    .hero-logo:hover {
+        transform: scale(1.05);
+    }
+
+    .hero-content p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+    }
+
+    .btn-primary {
+        background: white;
+        color: #2563eb;
+        border: none;
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-primary:hover {
+        background: #f1f5f9;
+        transform: translateY(-2px);
+    }
+
+    /* Shop Section */
+    .shop-section {
+        padding: 4rem 0;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        margin: 2rem;
+        border-radius: 15px;
+    }
+
+    .search-filter {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 3rem;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .search-box {
+        position: relative;
+        flex: 1;
+        max-width: 400px;
+    }
+
+    .search-box i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+    }
+
+    .search-box input {
+        width: 100%;
+        padding: 12px 15px 12px 45px;
+        border: 2px solid #e5e7eb;
+        border-radius: 5px;
+        font-size: 1rem;
+        outline: none;
+        transition: border-color 0.3s;
+        background: white;
+    }
+
+    .search-box input:focus {
+        border-color: #2563eb;
+    }
+
+    .filter-buttons {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .filter-btn {
+        padding: 8px 16px;
+        border: 2px solid #e5e7eb;
+        background: white;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: 500;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+        background: #2563eb;
+        color: white;
+        border-color: #2563eb;
+    }
+
+    /* Products Grid */
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 280px));
+        gap: 2rem;
+        justify-content: center;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        transition: all 0.3s;
+        cursor: pointer;
+        width: 280px;
+        height: auto;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+    .product-image {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        height: 250px;
+    }
+
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+    }
+
+    .product-card:hover .product-image img {
+        transform: scale(1.05);
+    }
+
+    .product-badges {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        display: flex;
+        gap: 5px;
+    }
+
+    .badge {
+        padding: 4px 8px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: white;
+    }
+
+    .badge.new {
+        background: #10b981;
+    }
+
+    .badge.sale {
+        background: #ef4444;
+    }
+
+    .favorite-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255,255,255,0.9);
+        border: none;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+    }
+
+    .favorite-btn:hover {
+        background: white;
+        transform: scale(1.1);
+    }
+
+    .favorite-btn.active {
+        color: #ef4444;
+    }
+
+    .product-info {
+        padding: 1.5rem;
+    }
+
+    .product-rating {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .stars {
+        color: #fbbf24;
+    }
+
+    .product-name {
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: #333;
+    }
+
+    .product-category {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .product-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .product-price {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .current-price {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .original-price {
+        font-size: 0.9rem;
+        color: #666;
+        text-decoration: line-through;
+    }
+
+    .add-to-cart {
+        background: #2563eb;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .add-to-cart:hover {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+    }
+
+    /* Cart Sidebar */
+    .cart-sidebar {
+        position: fixed;
+        top: 0;
+        right: -400px;
+        width: 400px;
+        height: 100vh;
+        background: white;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        transition: right 0.3s ease;
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cart-sidebar.open {
+        right: 0;
+    }
+
+    .cart-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .cart-header h2 {
+        font-size: 1.5rem;
+        color: #333;
+    }
+
+    .close-cart {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #666;
+        padding: 5px;
+    }
+
+    .close-cart:hover {
+        color: #333;
+    }
+
+    .cart-items {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+    }
+
+    .cart-item {
+        display: flex;
+        gap: 1rem;
+        padding: 1rem;
+        border-bottom: 1px solid #f3f4f6;
+        align-items: center;
+    }
+
+    .cart-item img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+
+    .cart-item-info {
+        flex: 1;
+    }
+
+    .cart-item-name {
+        font-weight: bold;
+        margin-bottom: 0.25rem;
+    }
+
+    .cart-item-price {
+        color: #2563eb;
+        font-weight: bold;
+    }
+
+    .remove-item {
+        background: #ef4444;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 0.8rem;
+    }
+
+    .remove-item:hover {
+        background: #dc2626;
+    }
+
+    .cart-footer {
+        padding: 1.5rem;
+        border-top: 1px solid #e5e7eb;
+        background: #f9fafb;
+    }
+
+    .cart-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    .checkout-btn {
+        width: 100%;
+        background: #10b981;
+        color: white;
+        border: none;
+        padding: 1rem;
+        border-radius: 5px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .checkout-btn:hover {
+        background: #059669;
+    }
+
+    .checkout-btn:disabled {
+        background: #9ca3af;
+        cursor: not-allowed;
+    }
+
+    .clear-cart {
+        width: 100%;
+        background: #ef4444;
+        color: white;
+        border: none;
+        padding: 0.75rem;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 0.5rem;
+        transition: background 0.3s;
+    }
+
+    .clear-cart:hover {
+        background: #dc2626;
+    }
+
+    /* Customer Details Form */
+    .customer-form {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        z-index: 3000;
+        width: 90%;
+        max-width: 500px;
+        max-height: 80vh;
+        overflow-y: auto;
+        display: none;
+    }
+
+    .customer-form.show {
+        display: block;
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .form-header h2 {
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 5px;
+        font-size: 1rem;
+        outline: none;
+        transition: border-color 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+        border-color: #2563eb;
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        height: 80px;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .form-actions button {
+        flex: 1;
+        padding: 1rem;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-cancel {
+        background: #6b7280;
+        color: white;
+    }
+
+    .btn-cancel:hover {
+        background: #4b5563;
+    }
+
+    .btn-pay {
+        background: #10b981;
+        color: white;
+    }
+
+    .btn-pay:hover {
+        background: #059669;
+    }
+
+    /* Overlay */
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1500;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s;
+    }
+
+    .overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Loading State */
+    .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #2563eb;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Footer */
+    .footer {
+        background: #1f2937;
+        color: white;
+        padding: 3rem 0 1rem;
+        margin-top: 4rem;
+    }
+
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .footer-brand {
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        color: #60a5fa;
+    }
+
+    .footer-brand img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+        margin-right: 0.5rem;
+        border-radius: 6px;
+    }
+
+    .footer-section h3 {
+        margin-bottom: 1rem;
+        color: white;
+    }
+
+    .footer-section ul {
+        list-style: none;
+    }
+
+    .footer-section ul li {
+        margin-bottom: 0.5rem;
+    }
+
+    .footer-section ul li a {
+        color: #9ca3af;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .footer-section ul li a:hover {
+        color: white;
+    }
+
+    .footer-bottom {
+        border-top: 1px solid #374151;
+        padding-top: 1rem;
+        text-align: center;
+        color: #9ca3af;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .nav-menu {
+            display: none;
+        }
+        
+        .hero-logo {
+            max-width: 90%;
+        }
+        
+        .search-filter {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .filter-buttons {
+            justify-content: center;
+        }
+        
+        .products-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 250px));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            width: 250px;
+        }
+
+        .nav-brand img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .cart-sidebar {
+            width: 100%;
+            right: -100%;
+        }
+
+        .customer-form {
+            width: 95%;
+            padding: 1.5rem;
+        }
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    /* Success/Error Messages */
+    .message {
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        padding: 1rem 1.5rem;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+        z-index: 3000;
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+    }
+
+    .message.show {
+        transform: translateX(0);
+    }
+
+    .message.success {
+        background: #10b981;
+    }
+
+    .message.error {
+        background: #ef4444;
+    }
+</style>
+</head>
+<body>
+<!-- Header -->
+<header class="header">
+    <div class="container">
+        <div class="nav-brand">
+            <img src="https://i.ibb.co/BVTSz21X/Lisa-15.png" alt="Indwangu wear logo">
+            <span>Indwangu wear</span>
+        </div>
+        <nav class="nav-menu">
+            <a href="#home" class="nav-link active">Home</a>
+            <a href="#shop" class="nav-link">Shop</a>
+            <a href="#collections" class="nav-link">Collections</a>
+            <a href="#about" class="nav-link">About</a>
+        </nav>
+        <div class="nav-icons">
+            <i class="fas fa-user"></i>
+            <div class="cart-icon" onclick="toggleCart()">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Hero Section with Logo -->
+<section class="hero" id="home">
+    <div class="hero-content">
+        <img src="https://i.ibb.co/BVTSz21X/Lisa-15.png" alt="Indwangu Wear Logo" class="hero-logo">
+        <p>Premium South African clothing collection for the modern wardrobe</p>
+        <button class="btn-primary">Shop Now</button>
+    </div>
+</section>
+
+<!-- Search and Filter -->
+<section class="shop-section" id="shop">
+    <div class="container">
+        <div class="search-filter">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search clothing...">
+            </div>
+            <div class="filter-buttons">
+                <i class="fas fa-filter"></i>
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="t-shirts">T-Shirts</button>
+                <button class="filter-btn" data-category="shirts">Shirts</button>
+                <button class="filter-btn" data-category="caps">Caps</button>
+                <button class="filter-btn" data-category="new">New Arrivals</button>
+                <button class="filter-btn" data-category="sale">Sale</button>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will be dynamically loaded here -->
+        </div>
+    </div>
+</section>
+
+<!-- Cart Sidebar -->
+<div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+        <h2>Shopping Cart</h2>
+        <button class="close-cart" onclick="toggleCart()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div class="cart-items" id="cartItems">
+        <!-- Cart items will be dynamically loaded here -->
+    </div>
+    <div class="cart-footer">
+        <div class="cart-total">
+            <span>Total: </span>
+            <span id="cartTotal">R0</span>
+        </div>
+        <button class="checkout-btn" id="checkoutBtn" onclick="showCustomerForm()">
+            <span id="checkoutText">Proceed to Checkout</span>
+        </button>
+        <button class="clear-cart" onclick="clearCart()">Clear Cart</button>
+    </div>
+</div>
+
+<!-- Customer Details Form -->
+<div class="customer-form" id="customerForm">
+    <div class="form-header">
+        <h2>Shipping Details</h2>
+        <p>Please provide your details for delivery</p>
+    </div>
+    <form id="customerDetailsForm">
+        <div class="form-group">
+            <label for="fullName">Full Name *</label>
+            <input type="text" id="fullName" name="fullName" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number *</label>
+            <input type="tel" id="phone" name="phone" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Street Address *</label>
+            <input type="text" id="address" name="address" required>
+        </div>
+        <div class="form-group">
+            <label for="city">City *</label>
+            <input type="text" id="city" name="city" required>
+        </div>
+        <div class="form-group">
+            <label for="postalCode">Postal Code *</label>
+            <input type="text" id="postalCode" name="postalCode" required>
+        </div>
+        <div class="form-group">
+            <label for="notes">Special Instructions (Optional)</label>
+            <textarea id="notes" name="notes" placeholder="Any special delivery instructions..."></textarea>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn-cancel" onclick="hideCustomerForm()">Cancel</button>
+            <button type="submit" class="btn-pay">Continue to Payment</button>
+        </div>
+    </form>
+</div>
+
+<!-- Overlay -->
+<div class="overlay" id="overlay" onclick="closeOverlays()"></div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-brand">
+                    <img src="https://i.ibb.co/BVTSz21X/Lisa-15.png" alt="Indwangu wear logo">
+                    <span>Indwangu wear</span>
+                </div>
+                <p>Your destination for premium South African clothing and fashion essentials.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Shop</h3>
+                <ul>
+                    <li><a href="#">T-Shirts</a></li>
+                    <li><a href="#">Shirts</a></li>
+                    <li><a href="#">Caps</a></li>
+                    <li><a href="#">New Arrivals</a></li>
+                    <li><a href="#">Sale</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Customer Care</h3>
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Size Guide</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <ul>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Newsletter</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Indwangu wear. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Yoco SDK initialization
+    var yoco = new YocoSDK({
+        publicKey: 'pk_live_9495da49vnZy7RN802d4' // Your live public key
+    });
+
+    // Product data
+    const products = [
+        // T-Shirts
+        {
+            id: 1,
+            name: "Classic White Tee",
+            price: 450,
+            originalPrice: 500,
+            image: "https://i.ibb.co/23f7748g/Lisa-1.png",
+            category: "t-shirts",
+            rating: 4.8,
+            reviews: 124,
+            isNew: true,
+            isSale: true,
+        },
+        {
+            id: 2,
+            name: "Vintage Graphic Tee",
+            price: 400,
+            image: "https://i.ibb.co/3myVxJJL/Lisa-2.png",
+            category: "t-shirts",
+            rating: 4.6,
+            reviews: 89,
+            isNew: false,
+            isSale: false,
+        },
+        {
+            id: 5,
+            name: "Designer Collection Tee",
+            price: 500,
+            image: "https://i.ibb.co/Bx9XW7c/Lisa-5.png",
+            category: "t-shirts",
+            rating: 4.8,
+            reviews: 167,
+            isNew: true,
+            isSale: false,
+        },
+        {
+            id: 6,
+            name: "Essential T-Shirt Pack",
+            price: 799,
+            originalPrice: 999,
+            image: "https://i.ibb.co/8gv2Czj4/Tshirts.png",
+            category: "t-shirts",
+            rating: 4.9,
+            reviews: 342,
+            isNew: false,
+            isSale: true,
+        },
+        // Shirts
+        {
+            id: 3,
+            name: "Premium Cotton Shirt",
+            price: 549,
+            image: "https://i.ibb.co/YsBQ8dq/Lisa-3.png",
+            category: "shirts",
+            rating: 4.9,
+            reviews: 156,
+            isNew: true,
+            isSale: false,
+        },
+        {
+            id: 4,
+            name: "Casual Button-Up",
+            price: 449,
+            originalPrice: 599,
+            image: "https://i.ibb.co/PZzx6xg2/Lisa-4.png",
+            category: "shirts",
+            rating: 4.7,
+            reviews: 203,
+            isNew: false,
+            isSale: true,
+        },
+        {
+            id: 7,
+            name: "Limited Edition Shirt",
+            price: 549,
+            image: "https://i.ibb.co/7xF40qC9/Lisa-14.png",
+            category: "shirts",
+            rating: 4.8,
+            reviews: 98,
+            isNew: true,
+            isSale: false,
+        },
+        // Caps
+        {
+            id: 8,
+            name: "Classic Baseball Cap",
+            price: 250,
+            image: "https://i.ibb.co/VcTZ2p4k/Lisa-13.png",
+            category: "caps",
+            rating: 4.5,
+            reviews: 67,
+            isNew: true,
+            isSale: false,
+        },
+        {
+            id: 9,
+            name: "Vintage Style Cap",
+            price: 350,
+            image: "https://i.ibb.co/LXQvjPgx/Lisa-12.png",
+            category: "caps",
+            rating: 4.7,
+            reviews: 89,
+            isNew: false,
+            isSale: false,
+        },
+        {
+            id: 10,
+            name: "Premium Snapback",
+            price: 350,
+            image: "https://i.ibb.co/QF21cCCN/Lisa-11.png",
+            category: "caps",
+            rating: 4.6,
+            reviews: 54,
+            isNew: true,
+            isSale: false,
+        },
+        {
+            id: 11,
+            name: "Urban Street Cap",
+            price: 250,
+            image: "https://i.ibb.co/SXtzFX0V/Lisa-10.png",
+            category: "caps",
+            rating: 4.4,
+            reviews: 43,
+            isNew: false,
+            isSale: false,
+        },
+        {
+            id: 12,
+            name: "Designer Cap Collection",
+            price: 350,
+            image: "https://i.ibb.co/xS9XhGjT/Lisa-9.png",
+            category: "caps",
+            rating: 4.8,
+            reviews: 76,
+            isNew: true,
+            isSale: false,
+        },
+        {
+            id: 13,
+            name: "Sport Performance Cap",
+            price: 250,
+            image: "https://i.ibb.co/8D3gjv57/Lisa-8.png",
+            category: "caps",
+            rating: 4.5,
+            reviews: 62,
+            isNew: false,
+            isSale: false,
+        },
+        {
+            id: 14,
+            name: "Limited Edition Cap",
+            price: 350,
+            image: "https://i.ibb.co/B2bmVyVK/Lisa-7.png",
+            category: "caps",
+            rating: 4.9,
+            reviews: 91,
+            isNew: true,
+            isSale: false,
+        }
+    ];
+
+    // State management
+    let favorites = [];
+    let cart = [];
+    let currentFilter = 'all';
+    let searchQuery = '';
+    let customerDetails = {};
+
+    // DOM elements
+    const productsGrid = document.getElementById('productsGrid');
+    const searchInput = document.getElementById('searchInput');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cartCount = document.querySelector('.cart-count');
+    const cartSidebar = document.getElementById('cartSidebar');
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+    const overlay = document.getElementById('overlay');
+    const customerForm = document.getElementById('customerForm');
+    const customerDetailsForm = document.getElementById('customerDetailsForm');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    const checkoutText = document.getElementById('checkoutText');
+
+    // Initialize the app
+    document.addEventListener('DOMContentLoaded', function() {
+        renderProducts();
+        setupEventListeners();
+        updateCartDisplay();
+    });
+
+    // Setup event listeners
+    function setupEventListeners() {
+        // Search functionality
+        searchInput.addEventListener('input', function(e) {
+            searchQuery = e.target.value.toLowerCase();
+            renderProducts();
+        });
+
+        // Filter functionality
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.dataset.category;
+                renderProducts();
+            });
+        });
+
+        // Customer form submission
+        customerDetailsForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            customerDetails = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                postalCode: document.getElementById('postalCode').value,
+                notes: document.getElementById('notes').value
+            };
+
+            hideCustomerForm();
+            processPayment();
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = this.getAttribute('href');
+                if (target.startsWith('#')) {
+                    const element = document.querySelector(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Shop Now button functionality
+        document.querySelector('.btn-primary').addEventListener('click', function() {
+            document.querySelector('#shop').scrollIntoView({ behavior: 'smooth' });
+        });
+    }
+
+    // Filter products based on current filter and search query
+    function getFilteredProducts() {
+        return products.filter(product => {
+            let matchesFilter = true;
+            if (currentFilter !== 'all') {
+                if (currentFilter === 'new') {
+                    matchesFilter = product.isNew;
+                } else if (currentFilter === 'sale') {
+                    matchesFilter = product.isSale;
+                } else {
+                    matchesFilter = product.category === currentFilter;
+                }
+            }
+
+            const matchesSearch = product.name.toLowerCase().includes(searchQuery);
+            return matchesFilter && matchesSearch;
+        });
+    }
+
+    // Render products to the grid
+    function renderProducts() {
+        const filteredProducts = getFilteredProducts();
+        
+        if (filteredProducts.length === 0) {
+            productsGrid.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+                    <p style="font-size: 1.2rem; color: #333; background: white; padding: 2rem; border-radius: 10px;">No items found matching your criteria.</p>
+                </div>
+            `;
+            return;
+        }
+
+        productsGrid.innerHTML = filteredProducts.map(product => `
+            <div class="product-card" data-id="${product.id}">
+                <div class="product-image">
+                    <img src="${product.image}" alt="${product.name}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPiR7cHJvZHVjdC5uYW1lfTwvdGV4dD48L3N2Zz4='">
+                    <div class="product-badges">
+                        ${product.isNew ? '<span class="badge new">New</span>' : ''}
+                        ${product.isSale ? '<span class="badge sale">Sale</span>' : ''}
+                    </div>
+                    <button class="favorite-btn ${favorites.includes(product.id) ? 'active' : ''}" onclick="toggleFavorite(${product.id})">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+                <div class="product-info">
+                    <div class="product-rating">
+                        <span class="stars">★</span>
+                        <span>${product.rating} (${product.reviews})</span>
+                    </div>
+                    <h3 class="product-name">${product.name}</h3>
+                    <p class="product-category">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</p>
+                    <div class="product-footer">
+                        <div class="product-price">
+                            <span class="current-price">R${product.price}</span>
+                            ${product.originalPrice ? `<span class="original-price">R${product.originalPrice}</span>` : ''}
+                        </div>
+                        <button class="add-to-cart" onclick="addToCart(${product.id})">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Toggle favorite status
+    function toggleFavorite(productId) {
+        const index = favorites.indexOf(productId);
+        if (index > -1) {
+            favorites.splice(index, 1);
+        } else {
+            favorites.push(productId);
+        }
+        
+        const favoriteBtn = document.querySelector(`[data-id="${productId}"] .favorite-btn`);
+        favoriteBtn.classList.toggle('active');
+        
+        favoriteBtn.style.transform = 'scale(1.2)';
+        setTimeout(() => {
+            favoriteBtn.style.transform = 'scale(1)';
+        }, 200);
+    }
+
+    // Add product to cart
+    function addToCart(productId) {
+        const product = products.find(p => p.id === productId);
+        if (product) {
+            cart.push({...product, cartId: Date.now() + Math.random()});
+            updateCartDisplay();
+            
+            const addBtn = document.querySelector(`[data-id="${productId}"] .add-to-cart`);
+            const originalText = addBtn.textContent;
+            addBtn.textContent = 'Added!';
+            addBtn.style.background = '#10b981';
+            
+            setTimeout(() => {
+                addBtn.textContent = originalText;
+                addBtn.style.background = '#2563eb';
+            }, 1000);
+
+            showMessage('Item added to cart!', 'success');
+        }
+    }
+
+    // Remove item from cart
+    function removeFromCart(cartId) {
+        cart = cart.filter(item => item.cartId !== cartId);
+        updateCartDisplay();
+        showMessage('Item removed from cart', 'success');
+    }
+
+    // Clear entire cart
+    function clearCart() {
+        if (cart.length === 0) return;
+        
+        if (confirm('Are you sure you want to clear your cart?')) {
+            cart = [];
+            updateCartDisplay();
+            showMessage('Cart cleared', 'success');
+        }
+    }
+
+    // Update cart display
+    function updateCartDisplay() {
+        cartCount.textContent = cart.length;
+        
+        if (cart.length === 0) {
+            cartItems.innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: #666;">
+                    <i class="fas fa-shopping-cart" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                    <p>Your cart is empty</p>
+                </div>
+            `;
+            cartTotal.textContent = 'R0';
+            checkoutBtn.disabled = true;
+            return;
+        }
+
+        cartItems.innerHTML = cart.map(item => `
+            <div class="cart-item">
+                <img src="${item.image}" alt="${item.name}">
+                <div class="cart-item-info">
+                    <div class="cart-item-name">${item.name}</div>
+                    <div class="cart-item-price">R${item.price}</div>
+                </div>
+                <button class="remove-item" onclick="removeFromCart('${item.cartId}')">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        `).join('');
+
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        cartTotal.textContent = `R${total}`;
+        checkoutBtn.disabled = false;
+    }
+
+    // Toggle cart sidebar
+    function toggleCart() {
+        cartSidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+    }
+
+    // Show customer form
+    function showCustomerForm() {
+        if (cart.length === 0) return;
+        
+        customerForm.classList.add('show');
+        overlay.classList.add('active');
+        toggleCart(); // Close cart
+    }
+
+    // Hide customer form
+    function hideCustomerForm() {
+        customerForm.classList.remove('show');
+        overlay.classList.remove('active');
+    }
+
+    // Close all overlays
+    function closeOverlays() {
+        cartSidebar.classList.remove('open');
+        customerForm.classList.remove('show');
+        overlay.classList.remove('active');
+    }
+
+    // Process payment with Yoco
+    function processPayment() {
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        const totalInCents = total * 100; // Convert to cents for Yoco
+
+        // Update button to loading state
+        checkoutText.innerHTML = '<span class="loading"></span> Processing...';
+        checkoutBtn.disabled = true;
+
+        // Show Yoco payment popup
+        yoco.showPopup({
+            amountInCents: totalInCents,
+            currency: 'ZAR',
+            name: 'Indwangu wear',
+            description: `Purchase of ${cart.length} item(s)`,
+            callback: function (result) {
+                // Reset button
+                checkoutText.textContent = 'Proceed to Checkout';
+                checkoutBtn.disabled = false;
+
+                if (result.error) {
+                    showMessage("Payment failed: " + result.error.message, 'error');
+                    console.error('Payment error:', result.error);
+                } else {
+                    // Payment successful
+                    showMessage("Payment successful! Order confirmed.", 'success');
+                    console.log("Payment successful. Token: " + result.id);
+                    console.log("Customer details:", customerDetails);
+                    console.log("Order items:", cart);
+                    
+                    // Clear cart after successful payment
+                    cart = [];
+                    customerDetails = {};
+                    updateCartDisplay();
+                    
+                    // Reset form
+                    customerDetailsForm.reset();
+                }
+            }
+        });
+    }
+
+    // Show success/error messages
+    function showMessage(text, type) {
+        const existingMessages = document.querySelectorAll('.message');
+        existingMessages.forEach(msg => msg.remove());
+
+        const message = document.createElement('div');
+        message.className = `message ${type}`;
+        message.textContent = text;
+        document.body.appendChild(message);
+
+        setTimeout(() => message.classList.add('show'), 100);
+
+        setTimeout(() => {
+            message.classList.remove('show');
+            setTimeout(() => message.remove(), 300);
+        }, 3000);
+    }
+
+    // Smooth scroll to top when clicking logo
+    document.querySelector('.nav-brand').addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Add scroll effect to header
+    window.addEventListener('scroll', function() {
+        const header = document.querySelector('.header');
+        if (window.scrollY > 100) {
+            header.style.background = 'rgba(255, 255, 255, 0.95)';
+            header.style.backdropFilter = 'blur(10px)';
+        } else {
+            header.style.background = 'white';
+            header.style.backdropFilter = 'none';
+        }
+    });
+</script>
+</body>
+</html>
